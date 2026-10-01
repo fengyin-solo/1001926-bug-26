@@ -35,4 +35,8 @@ def health() -> dict[str, object]:
 @app.get("/api/overview")
 def overview() -> dict[str, object]:
     """运营概览：把各业务模块的待处理量汇总成看板卡片。"""
+    # 缺陷的待办/超期标记随定级阈值与当天日期动态变化，汇总前先对齐
+    from app.services.defect import defect_service
+
+    defect_service.refresh_flags()
     return store.overview()
